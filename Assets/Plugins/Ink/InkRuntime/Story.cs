@@ -2385,6 +2385,11 @@ namespace Ink.Runtime
         int _recursiveContinueCount = 0;
 
 		Profiler _profiler;
+
+        public bool HasExternalFunctionBound(string functionName)
+        {
+            return _externals.ContainsKey(functionName);
+        }
 	}
 }
 

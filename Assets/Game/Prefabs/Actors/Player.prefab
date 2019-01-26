@@ -166,7 +166,7 @@ GameObject:
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
-  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -205,9 +205,9 @@ MonoBehaviour:
   _walkSpeedFactor: 0.5
   _invertY: 0
   _lookSpeed: 90
-  _minLook: -85
-  _maxLook: 85
-  _interactRadius: 1
+  _minLook: -65
+  _maxLook: 65
+  _interactRadius: 1.5
   _interactLayerMask:
     serializedVersion: 2
     m_Bits: 512
@@ -243,5 +243,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 1, z: 0.25}
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Size: {x: 0.25, y: 1.25, z: 0.25}
+  m_Center: {x: -0, y: 0.625, z: 0}

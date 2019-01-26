@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ink.Runtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,6 +28,10 @@ public class GameManager : MonoBehaviour
     private LayerMask _obstacleLayerMask = 0;
     public LayerMask ObstacleLayerMask { get { return _obstacleLayerMask; } }
 
+    [SerializeField]
+    private List<Item> _items = null;
+    private Dictionary<string, Item> _itemDatabase;
+
     private void OnValidate()
     {
         SetAmbientLight(_ambientLight);
@@ -36,6 +41,19 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         LockMouse(_mouseLocked);
+
+        _itemDatabase = new Dictionary<string, Item>();
+
+        for (int i = 0; i < _items.Count; i++)
+            _itemDatabase.Add(_items[i].name, _items[i]);
+    }
+
+    public Item GetItem(string name)
+    {
+        if (_itemDatabase.ContainsKey(name))
+            return _itemDatabase[name];
+
+        return null;
     }
 
     private void SetAmbientLight(Color value)
@@ -44,9 +62,9 @@ public class GameManager : MonoBehaviour
         RenderSettings.ambientLight = _ambientLight;
     }
 
-    public void StartDialogue(string header, TextAsset storyAsset)
+    public void StartDialogue(GameObject owner, string header, Story story)
     {
-        _ui.SetDialogue(header, storyAsset);
+        _ui.SetDialogue(owner, header, story);
         LockMouse(false);
     }
 
@@ -82,5 +100,19 @@ public class GameManager : MonoBehaviour
     public void SetInteractPreviewString(string v)
     {
         _ui.SetInteractPreviewString(v);
+    }
+
+    public void GiveItem(string itemName)
+    {
+        var item = GetItem(itemName);
+
+        if(item == null)
+        {
+            Debug.LogWarning("Item with name " + itemName + " does not exist!");
+        }
+        else
+        {
+            _player.GiveItem(item);
+        }
     }
 }

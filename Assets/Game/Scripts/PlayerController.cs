@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,14 +47,22 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private float _dmgClose = 100.0f;
+
     [SerializeField]
     private float _dmgFar = 10.0f;
     [SerializeField]
     private float _dmgFacingFactor = 2.0f;
 
+    private List<Item> _inventory = null;
+
     public Vector3 GetViewDir()
     {
         return _camera.transform.forward;
+    }
+
+    private void Awake()
+    {
+        _inventory = new List<Item>();
     }
 
     public void ChangeHealth(float delta)
@@ -130,5 +139,27 @@ public class PlayerController : MonoBehaviour
             _curRotationCam.y += rotationY * curLookSpeed;
             camTransform.localRotation = Quaternion.Euler(_curRotationCam);
         }
+    }
+
+    public void GiveItem(Item item)
+    {
+        _inventory.Add(item);
+    }
+
+    public bool HasItem(string itemName)
+    {
+        Debug.Log("Has item?" + itemName);
+
+        return HasItem(GameManager.Instance.GetItem(itemName));
+    }
+
+    public bool HasItem(Item item)
+    {
+        return _inventory.Contains(item);
+    }
+
+    public void RemoveItem(Item item)
+    {
+        _inventory.Remove(item);
     }
 }

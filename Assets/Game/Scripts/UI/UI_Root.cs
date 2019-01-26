@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class UI_Root : MonoBehaviour
 {
+    private static char[] _inkTagSplit = { ':' };
+
     [SerializeField]
     private UI_DialogueBox _npcDialogueBox = null;
     [SerializeField]
@@ -14,27 +16,17 @@ public class UI_Root : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI _previewString = null;
 
-    [SerializeField]
-    private TextAsset _testText = null;
-    [SerializeField]
-    private bool _startTestText = false;
-
-    private TextAsset _curTextAsset;
     private Story _curStory;
 
     public bool IsDialogueRunning { get { return _curStory != null; } }
 
     private string _header;
 
+    private GameObject _dialogueOwner;
+
     private void Awake()
     {
         ShowDialogueUI(false);
-    }
-
-    private void Start()
-    {
-        if(_startTestText)
-            SetDialogue("unknown", _testText);
     }
 
     public void SetInteractPreviewString(string s)
@@ -49,12 +41,67 @@ public class UI_Root : MonoBehaviour
         }
     }
 
-    public void SetDialogue(string header, TextAsset storyJsonAsset)
-    {   
+    private void AddFunctions(Story story)
+    {
+        const string HAS_ITEM_FUNCTION_NAME = "hasItem";
+
+        if (!_curStory.HasExternalFunctionBound(HAS_ITEM_FUNCTION_NAME))
+        {
+            _curStory.BindExternalFunction(HAS_ITEM_FUNCTION_NAME, (string itemName) =>
+            {
+                return GameManager.Instance.Player.HasItem(GameManager.Instance.GetItem(itemName));
+            });
+        }
+
+        const string REMOVE_ITEM_FUNCTION_NAME = "removeItem";
+
+        if (!_curStory.HasExternalFunctionBound(REMOVE_ITEM_FUNCTION_NAME))
+        {
+            _curStory.BindExternalFunction(REMOVE_ITEM_FUNCTION_NAME, (string itemName) =>
+            {
+                GameManager.Instance.Player.RemoveItem(GameManager.Instance.GetItem(itemName));
+            });
+        }
+
+        const string ADD_ITEM_FUNCTION_NAME = "giveItem";
+
+        if (!_curStory.HasExternalFunctionBound(ADD_ITEM_FUNCTION_NAME))
+        {
+            _curStory.BindExternalFunction(ADD_ITEM_FUNCTION_NAME, (string itemName) =>
+            {
+                GameManager.Instance.Player.GiveItem(GameManager.Instance.GetItem(itemName));
+            });
+        }
+
+        const string DESTROY_DIALOGUE_OWNER_FUNCTION_NAME = "destroyDialogueOwner";
+
+        if (!_curStory.HasExternalFunctionBound(DESTROY_DIALOGUE_OWNER_FUNCTION_NAME))
+        {
+            _curStory.BindExternalFunction(DESTROY_DIALOGUE_OWNER_FUNCTION_NAME, () =>
+            {   
+                if(_dialogueOwner)
+                {
+                    var destroyFoo = _dialogueOwner.GetComponent<DestroyController>();
+
+                    if(destroyFoo)
+                        destroyFoo.TriggerDestroy();
+
+                    else
+                        Destroy(_dialogueOwner);
+                }
+            });
+        }
+    }
+
+    public void SetDialogue(GameObject owner, string header, Story story)
+    {
+        _dialogueOwner = owner;
+        _curStory = story;
+        AddFunctions(_curStory);
+        _curStory.ChoosePathString("startKnot");
+
         _header = header;
         ShowDialogueUI(true);
-        _curTextAsset = storyJsonAsset;
-        _curStory = new Story(_curTextAsset.text);
         RefreshView();
     }
 
@@ -87,9 +134,15 @@ public class UI_Root : MonoBehaviour
         // If we've read all the content and there's no choices, the story is finished!
         else
         {
-            UI_AnswerButton choice = CreateChoiceView("End");
-            choice.GetButton().onClick.AddListener( delegate { GameManager.Instance.StopDialogue(); });
+            GameManager.Instance.StopDialogue();
+            //UI_AnswerButton choice = CreateChoiceView("End");
+            //choice.GetButton().onClick.AddListener( delegate {  });
         }
+    }
+
+    private void GiveItem(string item)
+    {
+        GameManager.Instance.GiveItem(item);
     }
 
     private UI_AnswerButton CreateChoiceView(string text)
@@ -106,7 +159,6 @@ public class UI_Root : MonoBehaviour
     public void StopDialogue()
     {
         _answerBox.DeleteOldAnswers();
-        _curTextAsset = null;
         _curStory = null;
         ShowDialogueUI(false);
     }

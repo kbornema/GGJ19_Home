@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Ink.Runtime;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,11 @@ public class Interact_Dialogue : AInteractable
     private string _previewText = "";
     [SerializeField]
     private NPC _npc = null;
+
+    private Story _story;
+
+    [SerializeField]
+    private GameObject _root;
 
     public override string GetPreviewString()
     {
@@ -26,6 +32,9 @@ public class Interact_Dialogue : AInteractable
         if (_npc)
             header = _npc.Info.NpcName;
 
-        GameManager.Instance.StartDialogue(header, _storyAsset);
+        if(_story == null)
+            _story = new Story(_storyAsset.text);
+
+        GameManager.Instance.StartDialogue(_root, header, _story);
     }
 }

@@ -19,6 +19,8 @@ public class SpriteBox : MonoBehaviour
     private SpriteRenderer _front = null;
     [SerializeField]
     private SpriteRenderer _back = null;
+    [SerializeField]
+    private SpriteRenderer _top = null;
 
     [SerializeField]
     private bool _renderGizmo = true;
@@ -33,20 +35,26 @@ public class SpriteBox : MonoBehaviour
             _left.size = new Vector2(_size.z, _size.y);
         }
 
-        if (_left)
+        if (_right)
         {
             _right.transform.localPosition = new Vector3(0.5f * _size.x, 0.0f, 0.0f);
             _right.size = new Vector2(_size.z, _size.y);
         }
-        if (_left)
+        if (_front)
         {
             _front.transform.localPosition = new Vector3(0.0f, 0.0f, 0.5f * _size.z);
             _front.size = new Vector2(_size.x, _size.y);
         }
-        if (_left)
+        if (_back)
         {
             _back.transform.localPosition = new Vector3(0.0f, 0.0f, -0.5f * _size.z);
             _back.size = new Vector2(_size.x, _size.y);
+        }
+
+        if (_top)
+        {
+            _top.transform.localPosition = new Vector3(0.0f, _size.y, -0.5f * _size.z);
+            _top.size = new Vector2(_size.x, _size.z);
         }
 
         if (_box)

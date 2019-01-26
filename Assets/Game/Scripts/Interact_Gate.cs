@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gate : AInteractable
+public class Interact_Gate : AInteractable
 {
     [SerializeField]
     private string _previewString = "Gitter";
@@ -33,6 +33,18 @@ public class Gate : AInteractable
     [SerializeField]
     private bool _isMoving = false;
 
+    [SerializeField]
+    private Item _unlockItem = null;
+    [SerializeField]
+    public bool _consumeItem = true;
+
+    [SerializeField]
+    private bool _destroyUponUse = false;
+    [SerializeField]
+    private GameObject _destroyPrefab = null;
+    [SerializeField]
+    private Transform _destroySpawn = null;
+
     public override string GetPreviewString()
     {
         if (_isMoving)
@@ -52,10 +64,34 @@ public class Gate : AInteractable
 
     public override void Activate(PlayerController player)
     {
-        if(_isLocked || _isMoving)
+        if(_isMoving)
             return;
 
-        Open();
+        if (_isLocked)
+        {
+            if (_unlockItem && player.HasItem(_unlockItem))
+            {
+                if (_consumeItem)
+                    player.RemoveItem(_unlockItem);
+
+                _isLocked = false;
+            }
+
+            else
+            {
+                return;
+            }
+        }
+
+        if(_destroyUponUse)
+        {
+            if (_destroyPrefab)
+                Instantiate(_destroyPrefab, _destroySpawn.position, Quaternion.identity);
+
+            Destroy(_root.gameObject);
+        }
+        else
+            Open();
     }
 
     public void ForceOpen()

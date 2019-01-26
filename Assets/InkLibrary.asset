@@ -14,8 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inkLibrary:
   - compileAutomatically: 0
-    inkAsset: {fileID: 102900000, guid: 1460e815e969b43b8a83a7caa8b48c27, type: 3}
+    inkAsset: {fileID: 102900000, guid: 59d41173d181ab445b0920b7a4672bbf, type: 3}
     jsonAssetPath: {fileID: 0}
-    jsonAsset: {fileID: 4900000, guid: 6cf48bb6d89824cc69e35b43f9a1aca6, type: 3}
+    jsonAsset: {fileID: 4900000, guid: d7f2c359b21e18845bd96d96c01bea0e, type: 3}
+  - compileAutomatically: 0
+    inkAsset: {fileID: 102900000, guid: 359776bba90c2e045bcbdf755cc7c0c1, type: 3}
+    jsonAssetPath: {fileID: 0}
+    jsonAsset: {fileID: 4900000, guid: ab3c9a20778c54d4282be716798f02d6, type: 3}
+  - compileAutomatically: 0
+    inkAsset: {fileID: 102900000, guid: c5c87dfec92a37b4b8247fbc3df85f10, type: 3}
+    jsonAssetPath: {fileID: 0}
+    jsonAsset: {fileID: 4900000, guid: f8fa3e1001278874e9d05fb6dc0d27e8, type: 3}
   pendingCompilationStack: []
   compilationStack: []
