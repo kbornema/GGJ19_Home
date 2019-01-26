@@ -10,6 +10,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class RenderAsBillboard : MonoBehaviour
 {
+
     /// <summary> What Camera property to face when rendering. </summary>
     public enum Mode
     {
@@ -19,9 +20,9 @@ public class RenderAsBillboard : MonoBehaviour
         Rotation
     }
 
-    public Mode BillboardMode = Mode.Position;
+    //public Mode BillboardMode = Mode.Position;
     /// <summary> Used to restrict/enable rotation to certain axes. 0.0f disables rotation around that axis, 1.0f enables it. </summary>
-    public Vector3 Axes = new Vector3(1.0f, 1.0f, 1.0f);
+    public Vector3 Axes = new Vector3(1.0f, 0.0f, 1.0f);
 
     public Vector3 RotationOffset = new Vector3(0.0f, 0.0f, 0.0f);
 
@@ -38,18 +39,20 @@ public class RenderAsBillboard : MonoBehaviour
         Vector3 dir = GetDirection();
         dir.Scale(Axes);
         transform.forward = dir;
-        transform.Rotate(RotationOffset, Space.Self);
+
+        if(RotationOffset.x != 0.0f || RotationOffset.y != 0.0f || RotationOffset.z != 0.0f)
+            transform.Rotate(RotationOffset, Space.Self);
     }
 
     private Vector3 GetDirection()
     {
-        if (BillboardMode == Mode.Rotation)
-            return Camera.current.transform.forward;
+        //if (BillboardMode == Mode.Rotation)
+        //    return Camera.current.transform.forward;
 
-        else if (BillboardMode == Mode.Position)
+        //else if (BillboardMode == Mode.Position)
             return transform.position - Camera.current.transform.position;
 
-        Debug.Assert(false, "Unknown " + typeof(Mode).Name + ": " + BillboardMode, gameObject);
-        return Vector3.zero;
+        //Debug.Assert(false, "Unknown " + typeof(Mode).Name + ": " + BillboardMode, gameObject);
+        //return Vector3.zero;
     }
 }

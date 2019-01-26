@@ -8,8 +8,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField]
-    private UI_Root _ui = null;
+    private PlayerController _player = null;
+    public PlayerController Player { get { return _player; } }
 
+    [SerializeField]
+    private UI_Root _ui = null;
     public bool IsDialogueRunning { get { return _ui.IsDialogueRunning; } }
 
     [SerializeField]
@@ -19,6 +22,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Color _ambientLight = Color.black;
     public Color AmbientLight { get { return _ambientLight; } set { SetAmbientLight(value); } }
+
+    [SerializeField]
+    private LayerMask _obstacleLayerMask = 0;
+    public LayerMask ObstacleLayerMask { get { return _obstacleLayerMask; } }
 
     private void OnValidate()
     {

@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rigibody = null;
     [SerializeField]
     private Camera _camera = null;
+    [SerializeField]
+    private Transform _center = null;
+    public Transform Center { get { return _center; } }
 
     [Header("Movement")]
     [SerializeField]
@@ -34,6 +37,35 @@ public class PlayerController : MonoBehaviour
 
 
     private Vector3 _curRotationCam;
+
+    [Header("Damage")]
+    [SerializeField]
+    private float _health = 100.0f;
+    [SerializeField]
+    private float _maxHealth = 100.0f;
+
+    [SerializeField]
+    private float _dmgClose = 100.0f;
+    [SerializeField]
+    private float _dmgFar = 10.0f;
+    [SerializeField]
+    private float _dmgFacingFactor = 2.0f;
+
+    public Vector3 GetViewDir()
+    {
+        return _camera.transform.forward;
+    }
+
+    public void ChangeHealth(float delta)
+    {
+        _health = Mathf.Clamp(_health + delta, 0.0f, _maxHealth);
+    }
+
+    public void OnLookAtIrrwish(float distT, float facingT, float opaqueness)
+    {
+        float dmg = Mathf.Lerp(_dmgClose, _dmgFar, distT) * facingT * _dmgFacingFactor * (1.0f - opaqueness);
+        ChangeHealth(dmg * Time.deltaTime);
+    }
 
     private void Update()
     {

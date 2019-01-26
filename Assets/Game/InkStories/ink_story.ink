@@ -49,9 +49,6 @@ You left the cell!
     
     = know_talk_to_goblin
     -> DONE
-
-
-
     
 -> END
 
