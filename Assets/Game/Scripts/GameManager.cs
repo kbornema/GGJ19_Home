@@ -16,10 +16,25 @@ public class GameManager : MonoBehaviour
     private bool _mouseLocked = true;
     public bool MouseLocked { get { return _mouseLocked; } }
 
+    [SerializeField]
+    private Color _ambientLight = Color.black;
+    public Color AmbientLight { get { return _ambientLight; } set { SetAmbientLight(value); } }
+
+    private void OnValidate()
+    {
+        SetAmbientLight(_ambientLight);
+    }
+
     private void Awake()
     {
         Instance = this;
         LockMouse(_mouseLocked);
+    }
+
+    private void SetAmbientLight(Color value)
+    {
+        _ambientLight = value;
+        RenderSettings.ambientLight = _ambientLight;
     }
 
     public void StartDialogue(string header, TextAsset storyAsset)

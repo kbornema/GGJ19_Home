@@ -1,4 +1,4 @@
-﻿Shader "Sprites/AlphaBlendZWrite"
+﻿Shader "Sprites/ZWrite"
 {
 	Properties
 	{

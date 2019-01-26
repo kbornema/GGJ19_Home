@@ -21,12 +21,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float _lookSpeed = 1.0f;
 
+    [SerializeField]
+    private float _minLook = -85.0f;
+    [SerializeField]
+    private float _maxLook = 85.0f;
+
     [Header("Interaction")]
     [SerializeField]
     private float _interactRadius = 1.0f;
     [SerializeField]
     private LayerMask _interactLayerMask = 0;
 
+
+    private Vector3 _curRotationCam;
 
     private void Update()
     {
@@ -86,13 +93,10 @@ public class PlayerController : MonoBehaviour
 
             float curLookSpeed = fixedDelta * _lookSpeed;
 
-            Vector3 curLocalRota = camTransform.localEulerAngles;
-
-            curLocalRota.x += rotationX * curLookSpeed;
-            curLocalRota.y += rotationY * curLookSpeed;
-
-            //TODO: clamp rotation:
-            camTransform.localEulerAngles = curLocalRota;
+            _curRotationCam.x += rotationX * curLookSpeed;
+            _curRotationCam.x = Mathf.Clamp(_curRotationCam.x, _minLook, _maxLook);
+            _curRotationCam.y += rotationY * curLookSpeed;
+            camTransform.localRotation = Quaternion.Euler(_curRotationCam);
         }
     }
 }
