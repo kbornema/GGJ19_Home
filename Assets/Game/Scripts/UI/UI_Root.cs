@@ -71,6 +71,16 @@ public class UI_Root : MonoBehaviour
             });
         }
 
+        const string ACTIVATE_NPC = "enableNpc";
+
+        if (!_curStory.HasExternalFunctionBound(ACTIVATE_NPC))
+        {
+            _curStory.BindExternalFunction(ACTIVATE_NPC, (string who, string where, bool value) =>
+            {
+                GameManager.Instance.EnableNpc(who, where, value);
+            });
+        }
+
         const string DESTROY_DIALOGUE_OWNER_FUNCTION_NAME = "destroyDialogueOwner";
 
         if (!_curStory.HasExternalFunctionBound(DESTROY_DIALOGUE_OWNER_FUNCTION_NAME))
@@ -90,6 +100,11 @@ public class UI_Root : MonoBehaviour
             });
         }
 
+    }
+
+    public bool IsCurrentStory(Story s)
+    {
+        return _curStory == s;
     }
 
     public void SetDialogue(GameObject owner, string header, Story story)

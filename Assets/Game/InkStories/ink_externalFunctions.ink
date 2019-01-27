@@ -4,8 +4,14 @@ EXTERNAL removeItem(name)
 
 EXTERNAL destroyDialogueOwner()
 
+EXTERNAL enableNpc(who, where, val)
+
 //
 // Fallback functions:
+//
+
+//
+// Items:
 //
 
 === function hasItem(itemName) ===
@@ -16,6 +22,14 @@ EXTERNAL destroyDialogueOwner()
 
 === function removeItem(itemName) ===
     ~return 
+
+//
+// Other:
+//
     
 === function destroyDialogueOwner() ===
+    ~return 
+    
+        
+=== function enableNpc(who, where, val) ===
     ~return 

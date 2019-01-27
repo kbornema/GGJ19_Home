@@ -37,4 +37,12 @@ public class Interact_Dialogue : AInteractable
 
         GameManager.Instance.StartDialogue(_root, header, _story);
     }
+
+    private void OnDestroy()
+    {
+        if(GameManager.Instance)
+        {
+            GameManager.Instance.StopDialogue(_story);
+        }
+    }
 }

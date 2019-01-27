@@ -68,6 +68,11 @@ public class PlayerController : MonoBehaviour
     public void ChangeHealth(float delta)
     {
         _health = Mathf.Clamp(_health + delta, 0.0f, _maxHealth);
+
+        if(_health <= 0.0f)
+        {
+            GameManager.Instance.Respawn();
+        }
     }
 
     public void OnLookAtIrrwish(float distT, float facingT, float opaqueness)
@@ -147,9 +152,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public bool HasItem(string itemName)
-    {
-        Debug.Log("Has item?" + itemName);
-
+    {   
         return HasItem(GameManager.Instance.GetItem(itemName));
     }
 
@@ -161,5 +164,11 @@ public class PlayerController : MonoBehaviour
     public void RemoveItem(Item item)
     {
         _inventory.Remove(item);
+    }
+
+    public void Respawn(Checkpoint currentCheckpoint)
+    {
+        transform.position = currentCheckpoint.GetSpawnPos();
+        _health = _maxHealth;
     }
 }

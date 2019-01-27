@@ -10,11 +10,14 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private PlayerController _player = null;
+
     public PlayerController Player { get { return _player; } }
 
     [SerializeField]
     private UI_Root _ui = null;
+
     public bool IsDialogueRunning { get { return _ui.IsDialogueRunning; } }
+
 
     [SerializeField]
     private bool _mouseLocked = true;
@@ -74,6 +77,13 @@ public class GameManager : MonoBehaviour
         LockMouse(true);
     }
 
+    public void StopDialogue(Story s)
+    {
+        if (_ui.IsCurrentStory(s))
+            StopDialogue();
+    }
+
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -114,5 +124,51 @@ public class GameManager : MonoBehaviour
         {
             _player.GiveItem(item);
         }
+    }
+
+    private List<NPC> _npcs = new List<NPC>();
+
+    public void RegisterNpc(NPC npc)
+    {
+        _npcs.Add(npc);
+    }
+
+    public void UnregisterNpc(NPC npc)
+    {
+        _npcs.Remove(npc);
+    }
+
+    public void EnableNpc(string who, string where, bool value)
+    {
+        NPC npc = GetNpc(who, where);
+
+        if (npc)
+            npc.gameObject.SetActive(value);
+    }
+
+    public NPC GetNpc(string who, string where)
+    {
+        for (int i = 0; i < _npcs.Count; i++)
+        {
+            var npc = _npcs[i];
+
+            if(npc.Info.NpcName == who && npc.Where == where)
+                return npc;
+        }
+
+        return null;
+    }
+
+    [SerializeField]
+    private Checkpoint _currentCheckpoint;
+
+    public void SetActiveCheckpoint(Checkpoint checkpoint)
+    {
+        _currentCheckpoint = checkpoint;
+    }
+
+    public void Respawn()
+    {
+        _player.Respawn(_currentCheckpoint);
     }
 }

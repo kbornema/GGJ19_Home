@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0093daefafe14c4ca7cd0ae53048ede, type: 3}
-  m_Name: NpcInfo_Gerd
+  m_Script: {fileID: 11500000, guid: b9c7e8869ad2d024e825e65644e2860f, type: 3}
+  m_Name: BigKey
   m_EditorClassIdentifier: 
-  _npcName: Gerd
+  DisplayName: Unbekannt
+  ItemIcon: {fileID: 0}

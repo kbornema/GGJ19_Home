@@ -1,8 +1,5 @@
 INCLUDE ink_globalVars.ink
-
-CONST string_gah_short = "*Gah*"
-CONST string_gah_medium = "*Gaaaahhhh*"
-CONST string_gah_long = "*Gaaaaaaaaaaaaaaaaahhhhh*"
+INCLUDE ink_goblinFlavor.ink
 
 VAR bool_first_talked = false
 

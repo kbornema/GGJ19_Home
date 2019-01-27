@@ -26,6 +26,14 @@ public class Irrwish : MonoBehaviour
     [SerializeField]
     private float _timeForCurve = 1.0f;
 
+    [SerializeField]
+    private float _upDownTime = 1.0f;
+    [SerializeField]
+    private AnimationCurve _upDownCurve = null;
+    [SerializeField]
+    private float _upDownScale = 1.0f;
+    private float _curUpDownTime;
+
     [Header("Aggro")]
     [SerializeField]
     private Gradient _aggroColor = null;
@@ -45,23 +53,26 @@ public class Irrwish : MonoBehaviour
     private LayerMask _rayCastLayerMask = 0;
     [SerializeField]
     private float _aggroRange = 12.0f;
-    private float _curTime = 0.0f;
+    private float _curColorTime = 0.0f;
+
+    public bool SeesPlayer { get { return _seesPlayer; } }
 
     private void Start()
     {
-        _curTime = UnityEngine.Random.value * _timeForCurve;
+        _curColorTime = UnityEngine.Random.value * _timeForCurve;
     }
 
     // Update is called once per frame
     private void Update()
     {   
-        _curTime += Time.deltaTime;
-
+       
         CheckPlayerVisible();
     }
 
     private void CheckPlayerVisible()
     {
+        _curColorTime += Time.deltaTime;
+
         _seesPlayer = false;
 
         PlayerController player = GameManager.Instance.Player;
@@ -112,7 +123,7 @@ public class Irrwish : MonoBehaviour
 
         if (_seesPlayer && opaqueness < 1.0f)
         {
-            float t = (_curTime * _aggroTimeScale) / _timeForCurve;
+            float t = (_curColorTime * _aggroTimeScale) / _timeForCurve;
             _light.intensity = Mathf.Lerp(_minAggroIntensity, _maxAggroIntensity, _aggroIntensity.Evaluate(t));
             SetCurColor(_aggroColor.Evaluate(_colorCurve.Evaluate(t)));
             
@@ -124,10 +135,21 @@ public class Irrwish : MonoBehaviour
 
         else
         {
-            float t = (_curTime) / _timeForCurve;
+            float t = (_curColorTime) / _timeForCurve;
             _light.intensity = Mathf.Lerp(_minDefaultIntensity, _maxDefaultIntensity, _defaultIntensity.Evaluate(t));
             SetCurColor(_mainColorGradient.Evaluate(_colorCurve.Evaluate(t)));
         }
+
+        _curUpDownTime += Time.deltaTime;
+
+        float upDownT = (_curUpDownTime / _upDownTime);
+
+        if(_seesPlayer)
+            upDownT *= 2.0f;
+
+        Vector3 pos = transform.position;
+        pos.y = _upDownCurve.Evaluate(upDownT) * _upDownScale;
+        transform.position = pos;
     }
 
     private void SetCurColor(Color color)
