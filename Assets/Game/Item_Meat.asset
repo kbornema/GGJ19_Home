@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9c7e8869ad2d024e825e65644e2860f, type: 3}
-  m_Name: SmallKey
+  m_Name: Item_Meat
   m_EditorClassIdentifier: 
   DisplayName: Unbekannt
-  ItemIcon: {fileID: 0}
+  ItemIcon: {fileID: 21300000, guid: 7e9bf93b635dc5f4592c204fcbc5c640, type: 3}
+  InkName: Meat

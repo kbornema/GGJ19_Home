@@ -7,4 +7,5 @@ public class Item : ScriptableObject
 {
     public string DisplayName = "Unbekannt";
     public Sprite ItemIcon = null;
+    public string InkName = "inkName";
 }

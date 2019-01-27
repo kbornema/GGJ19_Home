@@ -9,9 +9,7 @@ LIST HandEnum = Schere, Stein, Papier
 
 LIST GameResult = Verloren, Unentschieden, Gewonnen 
 
-//-1: playerLost
-// 0: draw:
-// 1: playerWon
+//-1: playerLost, 0: draw, 1: playerWon
 === function scissorsGame(playerChoice, otherChoice) ===
     ~ temp diff = playerChoice - otherChoice
     
@@ -40,47 +38,52 @@ LIST GameResult = Verloren, Unentschieden, Gewonnen
     
     { ~{ string_gah_short } | ... | {string_gah_medium} | {string_gah_long} }
     
-    * { not bool_first_talked } [Hallo? Kannst du reden?] -> knot_hello_goblin
-    * { not bool_first_talked } [Ein Goblin?! Du kannst hier verrecken, Mistgeburt!] -> knot_insult_goblin
-    + { bool_first_talked && not knot_got_name } [Verrätst du mir deinen Namen?] -> knot_ask_name
-    + { knot_got_name } [-Schere, Stein, Papier spielen-] -> knot_play_game
+    * { not bool_first_talked } ["Hallo? Kannst du reden?"] -> knot_hello_goblin
+    * { not bool_first_talked } ["Ein Goblin?! Du kannst hier verrecken, Mistgeburt!"] -> knot_insult_goblin
+    + { bool_first_talked && not knot_got_name } ["Verrätst du mir deinen Namen?"] -> knot_ask_name
+    + { knot_got_name } ["Gah, willst du etwas spielen?"] -> knot_play_game
     + [Gehen] -> END
         
         
     = knot_hello_goblin
     
         ~ bool_first_talked = true
-        { string_gah_medium } ... Was? Jemand lebend? Du mir helfen? { string_gah_short }
+        { string_gah_medium } "... Was? Jemand lebend? Du mir helfen?" { string_gah_short }
         
-        * [Helfen? Ich bin selbst eingesperrt.] -> knot_imprisoned_self
-        * [Hast du einen Namen?] -> knot_ask_name
-        + [Gehen] -> END
+        + ["Helfen? Ich bin selbst eingesperrt."] -> knot_imprisoned_self
+        + ["Dir helfen Goblin?! Lieber erhänge ich mich!"] -> knot_insult_goblin
     
     
     = knot_imprisoned_self
         
-        { string_gah_long } ... Verloren, alles verloren. { string_gah_short }
+        { string_gah_long } "... Verloren, alles verloren." { string_gah_short }
         
-        * [Hast du einen Namen?] -> knot_ask_name
-        + [Gehen] -> END
+        + ["Keine Angst, ich hole uns hier schon raus"] -> knot_friendly_goblin
+        + ["Ja, du bist hier verloren, Grünhaut!"] -> knot_insult_goblin
      
     = knot_ask_name
         
-        { float_goblin_trust < 0: Du nicht nett! Verschwinde! }
-        { float_goblin_trust == 0: Nö. Kenn' dich nicht. }
-        { float_goblin_trust > 0: Name ... Gah! {string_gah_short} }
+        { float_goblin_trust < 0: "Du nicht nett! Verschwinde!" }
+        { float_goblin_trust == 0: "Nö. Kenn' dich nicht." }
+        { float_goblin_trust > 0: "Name ... Gah!" {string_gah_short} }
         
-        + { float_goblin_trust > 0} [Sehr erfreut, Gah?] ->  knot_got_name
-        + { float_goblin_trust <= 0 } [Na, dann nicht.] -> startKnot 
-        + [Gehen] -> END
+        + { float_goblin_trust > 0} ["Sehr erfreut, Gah?"] ->  knot_got_name
+        + { float_goblin_trust <= 0 } ["Na, dann nicht." Gehen] -> END 
+        
+    = knot_friendly_goblin
+    
+        ~ float_goblin_trust = float_goblin_trust + 10
+        "Danke, { goblinPlayerLabel(float_goblin_trust) }. Du nett!"
+        
+        + [Weiter] -> startKnot
+        + [Gehen]-> END
      
     = knot_insult_goblin
      
         ~ bool_first_talked = true
         ~ float_goblin_trust = float_goblin_trust - 10
         
-        Verschwinde! Du, ... ETWAS!!
-        + [...] -> startKnot
+        "Verschwinde! Du, ... { goblinPlayerLabel (float_goblin_trust) }"
         + [Gehen] -> END
         
     //just here so that we can ask if the knot was visited
@@ -105,9 +108,10 @@ LIST GameResult = Verloren, Unentschieden, Gewonnen
         ~temp hisChoiceString = HandEnum(int_hisChoice)
         ~temp myChoiceString = HandEnum(int_myChoice)
         
-        {myChoiceString} vs. {hisChoiceString} a {resultString} !
+        
          ~temp hisAnswerString = getAnswerString(int_result)
-         {string_gah_short} {hisAnswerString}
+         
+        Ergebnis: {myChoiceString} vs. {hisChoiceString} - {resultString}. "{string_gah_short} {hisAnswerString}"
         
         
         + [Nochmal spielen] -> knot_play_game

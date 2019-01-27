@@ -12,9 +12,16 @@ public class NPC : MonoBehaviour
     private string _where = "";
     public string Where { get { return _where; } }
 
+    [SerializeField]
+    private bool _disableAfterRegister = false;
+
+
     private void Awake()
     {
         GameManager.Instance.RegisterNpc(this);
+
+        if(_disableAfterRegister)
+            gameObject.SetActive(false);
     }
 
     private void OnDestroy()

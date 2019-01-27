@@ -1,8 +1,6 @@
 INCLUDE ink_externalFunctions.ink
 INCLUDE ink_globalVars.ink
 
-
-
 === startKnot ===
 
     Ein Haufen Müll.
@@ -13,10 +11,8 @@ INCLUDE ink_globalVars.ink
     
     = knot_get_stone
         Du findest einen großen Stein. { giveItem(STRING_ITEM_STONE) }
-        + [Durchsuchen] -> knot_failed_search
         + [Gehen] -> END
         
     = knot_failed_search
         Du findest nichts Nützliches.
-        + [Durchsuchen] -> knot_failed_search
         + [Gehen] -> END

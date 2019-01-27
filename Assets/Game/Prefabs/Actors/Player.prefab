@@ -214,8 +214,19 @@ MonoBehaviour:
   _health: 100
   _maxHealth: 100
   _dmgClose: -100
-  _dmgFar: -10
-  _dmgFacingFactor: 2
+  _dmgFar: -20
+  _dmgFacingFactor: 2.5
+  _inventory: []
+  AddedItemEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: PlayerController+ItemEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  RemovedItemEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: PlayerController+ItemEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!54 &2633669128365116996
 Rigidbody:
   m_ObjectHideFlags: 0

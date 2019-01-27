@@ -5,18 +5,23 @@ INCLUDE ink_externalFunctions.ink
 
     Das Gitter ist beschädigt. Vielleicht kann man es zerstören?
    
-    +  { hasItem(STRING_ITEM_STONE) } [Stein benutzen] -> knot_open_with_stone
-    + [Gewalt anwenden] -> knot_try_brute_force
+    + { hasItem(STRING_ITEM_STONE) } [Stein benutzen] -> knot_open_with_stone
+    + { not hasItem(STRING_ITEM_STONE) } [Gegen Stangen schlagen] -> knot_try_brute_force
     + [Gehen] -> END
 
     = knot_try_brute_force
+    
         Mit bloßen Händen bekommst du das Tor nicht auf.
-        + [Gewalt anwenden] -> startKnot
+        
         + [Gehen] -> END
         
         
     = knot_open_with_stone
-        Du zerstörst das Gitter mit dem Stein. Leider ist er dabei ebenfalls zerbrochen. 
+    
+        Das Gitter lies sich mit dem Stein zerstören. Der Stein ist dabei zerbrochen.
+        
         { removeItem(STRING_ITEM_STONE) } 
         { destroyDialogueOwner() }
+        { enableNpc("CellWindow", "", false) }
+        
         + [Gehen] -> END

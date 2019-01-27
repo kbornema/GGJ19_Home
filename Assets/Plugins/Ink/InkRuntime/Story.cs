@@ -1912,6 +1912,14 @@ namespace Ink.Runtime
             }
         }
 
+        public bool IsVariableObserved(string varName)
+        {
+            if (_variableObservers == null)
+                return false;
+
+            return _variableObservers.ContainsKey(varName);
+        }
+
         /// <summary>
         /// Convenience function to allow multiple variables to be observed with the same
         /// observer delegate function. See the singular ObserveVariable for details.

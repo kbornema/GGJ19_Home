@@ -6,7 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_Root : MonoBehaviour
-{   
+{
+    const string GOBLIN_TRUST_VAR = "float_goblin_trust";
+
     [SerializeField]
     private UI_DialogueBox _npcDialogueBox = null;
     [SerializeField]
@@ -21,6 +23,8 @@ public class UI_Root : MonoBehaviour
     private string _header;
 
     private GameObject _dialogueOwner;
+
+    private List<AInteractable> _interactables = new List<AInteractable>();
 
     private void Awake()
     {
@@ -41,6 +45,16 @@ public class UI_Root : MonoBehaviour
 
     private void AddFunctions(Story story)
     {
+        var vars = story.variablesState;
+
+        if(vars.HasVariable(GOBLIN_TRUST_VAR))
+        {
+            vars[GOBLIN_TRUST_VAR] = GameManager.Instance.GoblinTrust;
+
+            if(!story.IsVariableObserved(GOBLIN_TRUST_VAR))
+                story.ObserveVariable(GOBLIN_TRUST_VAR, OnGoblinTrustValueChanged);
+        }
+
         const string HAS_ITEM_FUNCTION_NAME = "hasItem";
 
         if (!_curStory.HasExternalFunctionBound(HAS_ITEM_FUNCTION_NAME))
@@ -81,6 +95,16 @@ public class UI_Root : MonoBehaviour
             });
         }
 
+        const string END = "endGame";
+
+        if (!_curStory.HasExternalFunctionBound(END))
+        {
+            _curStory.BindExternalFunction(END, () =>
+            {
+                Application.Quit();
+            });
+        }
+
         const string DESTROY_DIALOGUE_OWNER_FUNCTION_NAME = "destroyDialogueOwner";
 
         if (!_curStory.HasExternalFunctionBound(DESTROY_DIALOGUE_OWNER_FUNCTION_NAME))
@@ -100,6 +124,25 @@ public class UI_Root : MonoBehaviour
             });
         }
 
+        const string ACTIVATE_INTERACTABLE = "triggerInteractable";
+
+        if (!_curStory.HasExternalFunctionBound(ACTIVATE_INTERACTABLE))
+        {
+            _curStory.BindExternalFunction(ACTIVATE_INTERACTABLE, (int id) =>
+            {
+                if(_interactables.Count > id)
+                {
+                    _interactables[id].Activate(GameManager.Instance.Player);
+                }
+            });
+        }
+
+    }
+
+    private void OnGoblinTrustValueChanged(string variableName, object newValue)
+    {
+        if(variableName == GOBLIN_TRUST_VAR && newValue is float)
+            GameManager.Instance.GoblinTrust = (float)newValue;
     }
 
     public bool IsCurrentStory(Story s)
@@ -107,8 +150,11 @@ public class UI_Root : MonoBehaviour
         return _curStory == s;
     }
 
-    public void SetDialogue(GameObject owner, string header, Story story)
+    public void SetDialogue(GameObject owner, string header, Story story, List<AInteractable> interactables)
     {
+        _interactables.Clear();
+        _interactables.AddRange(interactables);
+
         _dialogueOwner = owner;
         _curStory = story;
         AddFunctions(_curStory);
@@ -166,8 +212,11 @@ public class UI_Root : MonoBehaviour
 
     private void ShowDialogueUI(bool value)
     {
-        _npcDialogueBox.gameObject.SetActive(value);
-        _answerBox.gameObject.SetActive(value);
+        if(_npcDialogueBox != null)
+            _npcDialogueBox.gameObject.SetActive(value);
+
+        if (_answerBox != null)
+            _answerBox.gameObject.SetActive(value);
     }
 
     public void StopDialogue()

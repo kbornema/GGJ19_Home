@@ -17,6 +17,12 @@ public class Interact_Dialogue : AInteractable
     [SerializeField]
     private GameObject _root = null;
 
+    [SerializeField]
+    private List<AInteractable> _interactables;
+
+    [SerializeField]
+    private string _customInkString = "";
+
     public override string GetPreviewString()
     {
         if (_npc)
@@ -27,6 +33,9 @@ public class Interact_Dialogue : AInteractable
 
     public override void Activate(PlayerController player)
     {
+        if (_storyAsset == null)
+            return;
+
         string header = "";
 
         if (_npc)
@@ -35,7 +44,15 @@ public class Interact_Dialogue : AInteractable
         if(_story == null)
             _story = new Story(_storyAsset.text);
 
-        GameManager.Instance.StartDialogue(_root, header, _story);
+        var variables = _story.variablesState;
+
+        if(variables.HasVariable("string_objectText"))
+        {
+            variables["string_objectText"] = _customInkString;
+        }
+   
+
+        GameManager.Instance.StartDialogue(_root, header, _story, _interactables);
     }
 
     private void OnDestroy()

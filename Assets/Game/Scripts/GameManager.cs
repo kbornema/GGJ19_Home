@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<Item> _items = null;
     private Dictionary<string, Item> _itemDatabase;
+    
+    public float GoblinTrust;
 
     private void OnValidate()
     {
@@ -48,7 +50,7 @@ public class GameManager : MonoBehaviour
         _itemDatabase = new Dictionary<string, Item>();
 
         for (int i = 0; i < _items.Count; i++)
-            _itemDatabase.Add(_items[i].name, _items[i]);
+            _itemDatabase.Add(_items[i].InkName, _items[i]);
     }
 
     public Item GetItem(string name)
@@ -65,9 +67,9 @@ public class GameManager : MonoBehaviour
         RenderSettings.ambientLight = _ambientLight;
     }
 
-    public void StartDialogue(GameObject owner, string header, Story story)
+    public void StartDialogue(GameObject owner, string header, Story story, List<AInteractable> interactables = null)
     {
-        _ui.SetDialogue(owner, header, story);
+        _ui.SetDialogue(owner, header, story, interactables);
         LockMouse(false);
     }
 

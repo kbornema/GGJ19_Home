@@ -6,6 +6,10 @@ EXTERNAL destroyDialogueOwner()
 
 EXTERNAL enableNpc(who, where, val)
 
+EXTERNAL triggerInteractable(int_id)
+
+EXTERNAL endGame()
+
 //
 // Fallback functions:
 //
@@ -32,4 +36,10 @@ EXTERNAL enableNpc(who, where, val)
     
         
 === function enableNpc(who, where, val) ===
+    ~return 
+    
+=== function triggerInteractable(int_id) ===
+    ~return 
+    
+=== function endGame() ===
     ~return 

@@ -90,6 +90,11 @@ namespace Ink.Runtime
             }
         }
 
+        public bool HasVariable(string name)
+        {
+            return this[name] != null;
+        }
+
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();

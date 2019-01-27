@@ -101,7 +101,8 @@ public class Interact_Gate : AInteractable
     }
 
     private void Open()
-    {
+    {   
+        gameObject.SetActive(true);
         _curTime = 0.0f;
         _isMoving = true;
     }

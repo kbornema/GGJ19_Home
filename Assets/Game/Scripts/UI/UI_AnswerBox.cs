@@ -21,7 +21,15 @@ public class UI_AnswerBox : MonoBehaviour
 
     public void DeleteOldAnswers()
     {
+        if (_answerRoot == null)
+            return;
+
         for (int i = 0; i < _answerRoot.childCount; i++)
-            Destroy(_answerRoot.GetChild(i).gameObject);
+        {
+            var child = _answerRoot.GetChild(i);
+
+            if(child)
+                Destroy(child.gameObject);
+        }
     }
 }

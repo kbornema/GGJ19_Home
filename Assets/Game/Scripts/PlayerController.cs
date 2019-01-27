@@ -2,9 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
+    [System.Serializable]
+    public class ItemEvent : UnityEvent<Item> { }
+
     [SerializeField]
     private Rigidbody _rigibody = null;
     [SerializeField]
@@ -53,16 +57,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float _dmgFacingFactor = 2.0f;
 
-    private List<Item> _inventory = null;
+    [SerializeField]
+    private List<Item> _inventory;
+
+    [HideInInspector]
+    public ItemEvent AddedItemEvent = new ItemEvent();
+    [HideInInspector]
+    public ItemEvent RemovedItemEvent = new ItemEvent();
 
     public Vector3 GetViewDir()
     {
         return _camera.transform.forward;
-    }
-
-    private void Awake()
-    {
-        _inventory = new List<Item>();
     }
 
     public void ChangeHealth(float delta)
@@ -149,6 +154,7 @@ public class PlayerController : MonoBehaviour
     public void GiveItem(Item item)
     {
         _inventory.Add(item);
+        AddedItemEvent.Invoke(item);
     }
 
     public bool HasItem(string itemName)
@@ -164,6 +170,7 @@ public class PlayerController : MonoBehaviour
     public void RemoveItem(Item item)
     {
         _inventory.Remove(item);
+        RemovedItemEvent.Invoke(item);
     }
 
     public void Respawn(Checkpoint currentCheckpoint)
