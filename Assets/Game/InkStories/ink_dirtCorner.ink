@@ -1,6 +1,7 @@
-EXTERNAL giveItem(name)
+INCLUDE ink_externalFunctions.ink
+INCLUDE ink_globalVars.ink
 
-CONST KEY_ITEM = "Stone"
+
 
 === startKnot ===
 
@@ -9,9 +10,9 @@ CONST KEY_ITEM = "Stone"
     * {not knot_get_stone} [Durchsuchen] -> knot_get_stone
     + {knot_get_stone} [Durchsuchen] -> knot_failed_search
     + [Gehen] -> END
-
+    
     = knot_get_stone
-        Du findest einen großen Stein. { giveItem(KEY_ITEM) }
+        Du findest einen großen Stein. { giveItem(STRING_ITEM_STONE) }
         + [Durchsuchen] -> knot_failed_search
         + [Gehen] -> END
         

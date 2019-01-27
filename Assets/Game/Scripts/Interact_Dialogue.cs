@@ -15,7 +15,7 @@ public class Interact_Dialogue : AInteractable
     private Story _story;
 
     [SerializeField]
-    private GameObject _root;
+    private GameObject _root = null;
 
     public override string GetPreviewString()
     {

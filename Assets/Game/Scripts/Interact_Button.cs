@@ -11,7 +11,7 @@ public class Interact_Button : AInteractable
     public Event OnInteractedEvent = new Event();
 
     [SerializeField]
-    private string _titleName;
+    private string _titleName = "";
 
     public override string GetPreviewString()
     {

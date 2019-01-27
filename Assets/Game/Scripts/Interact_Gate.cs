@@ -15,7 +15,7 @@ public class Interact_Gate : AInteractable
     private bool _isOpen = false;
 
     [SerializeField]
-    private Transform _root;
+    private Transform _root = null;
 
     [SerializeField]
     private Transform _target = null;

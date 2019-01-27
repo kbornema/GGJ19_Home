@@ -5,9 +5,9 @@ using UnityEngine;
 public class SpawnParticles : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _prefab;
+    private GameObject _prefab = null;
     [SerializeField]
-    private Transform _where;
+    private Transform _where = null;
     
     public void Spawn()
     {

@@ -1,16 +1,11 @@
-EXTERNAL hasItem(name)
-EXTERNAL giveItem(name)
-EXTERNAL removeItem(name)
-
-EXTERNAL destroyDialogueOwner()
-
-CONST KEY_ITEM = "Stone"
+INCLUDE ink_globalVars.ink
+INCLUDE ink_externalFunctions.ink
 
 === startKnot ===
 
     Das Gitter ist beschädigt. Vielleicht kann man es zerstören?
    
-    +  { hasItem(KEY_ITEM) } [Stein benutzen] -> knot_open_with_stone
+    +  { hasItem(STRING_ITEM_STONE) } [Stein benutzen] -> knot_open_with_stone
     + [Gewalt anwenden] -> knot_try_brute_force
     + [Gehen] -> END
 
@@ -22,6 +17,6 @@ CONST KEY_ITEM = "Stone"
         
     = knot_open_with_stone
         Du zerstörst das Gitter mit dem Stein. Leider ist er dabei ebenfalls zerbrochen. 
-        { removeItem(KEY_ITEM) } 
+        { removeItem(STRING_ITEM_STONE) } 
         { destroyDialogueOwner() }
         + [Gehen] -> END

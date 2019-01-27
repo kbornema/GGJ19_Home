@@ -6,9 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_Root : MonoBehaviour
-{
-    private static char[] _inkTagSplit = { ':' };
-
+{   
     [SerializeField]
     private UI_DialogueBox _npcDialogueBox = null;
     [SerializeField]
@@ -91,6 +89,7 @@ public class UI_Root : MonoBehaviour
                 }
             });
         }
+
     }
 
     public void SetDialogue(GameObject owner, string header, Story story)
