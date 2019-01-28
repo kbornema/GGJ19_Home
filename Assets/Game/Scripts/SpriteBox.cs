@@ -27,40 +27,48 @@ public class SpriteBox : MonoBehaviour
     [SerializeField]
     private Color _gizmoColor = Color.gray;
 
+    [SerializeField]
+    private Vector3 _oldSize;
+
     private void OnValidate()
     {
-        if (_left)
+        if (_oldSize != _size)
         {
-            _left.transform.localPosition = new Vector3(-0.5f * _size.x, 0.0f, 0.0f);
-            _left.size = new Vector2(_size.z, _size.y);
-        }
+            _oldSize = _size;
 
-        if (_right)
-        {
-            _right.transform.localPosition = new Vector3(0.5f * _size.x, 0.0f, 0.0f);
-            _right.size = new Vector2(_size.z, _size.y);
-        }
-        if (_front)
-        {
-            _front.transform.localPosition = new Vector3(0.0f, 0.0f, 0.5f * _size.z);
-            _front.size = new Vector2(_size.x, _size.y);
-        }
-        if (_back)
-        {
-            _back.transform.localPosition = new Vector3(0.0f, 0.0f, -0.5f * _size.z);
-            _back.size = new Vector2(_size.x, _size.y);
-        }
+            if (_left)
+            {
+                _left.transform.localPosition = new Vector3(-0.5f * _size.x, 0.0f, 0.0f);
+                _left.size = new Vector2(_size.z, _size.y);
+            }
 
-        if (_top)
-        {
-            _top.transform.localPosition = new Vector3(0.0f, _size.y, -0.5f * _size.z);
-            _top.size = new Vector2(_size.x, _size.z);
-        }
+            if (_right)
+            {
+                _right.transform.localPosition = new Vector3(0.5f * _size.x, 0.0f, 0.0f);
+                _right.size = new Vector2(_size.z, _size.y);
+            }
+            if (_front)
+            {
+                _front.transform.localPosition = new Vector3(0.0f, 0.0f, 0.5f * _size.z);
+                _front.size = new Vector2(_size.x, _size.y);
+            }
+            if (_back)
+            {
+                _back.transform.localPosition = new Vector3(0.0f, 0.0f, -0.5f * _size.z);
+                _back.size = new Vector2(_size.x, _size.y);
+            }
 
-        if (_box)
-        {
-            _box.size = _size;
-            _box.center = new Vector3(0.0f, _size.y * 0.5f, 0.0f);
+            if (_top)
+            {
+                _top.transform.localPosition = new Vector3(0.0f, _size.y, -0.5f * _size.z);
+                _top.size = new Vector2(_size.x, _size.z);
+            }
+
+            if (_box)
+            {
+                _box.size = _size;
+                _box.center = new Vector3(0.0f, _size.y * 0.5f, 0.0f);
+            }
         }
     }
 

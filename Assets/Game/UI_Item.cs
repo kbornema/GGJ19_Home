@@ -7,10 +7,9 @@ using UnityEngine.UI;
 public class UI_Item : MonoBehaviour
 {
     [SerializeField]
-    private Image _image;
+    private Image _image = null;
     public Image GetImage() { return _image; }
-
-
+    
     public Item ItemOnSlot;
 
     public void Set(Item arg0)

@@ -13,11 +13,11 @@ public class CirclePatrol : MonoBehaviour
     private Transform _center = null;
 
     [SerializeField]
-    private Transform _root;
+    private Transform _root = null;
     private float _curTime = 0.0f;
 
     [SerializeField]
-    private Irrwish _irrwish;
+    private Irrwish _irrwish = null;
 
     // Update is called once per frame
     private void LateUpdate()

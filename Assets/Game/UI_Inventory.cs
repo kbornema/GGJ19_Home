@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class UI_Inventory : MonoBehaviour
 {
     [SerializeField]
-    private PlayerController _player;
+    private PlayerController _player = null;
     [SerializeField]
-    private Transform _itemRoot;
+    private Transform _itemRoot = null;
 
     [SerializeField]
-    private UI_Item _uiItemPrefab;
+    private UI_Item _uiItemPrefab = null;
 
     private List<UI_Item> items = new List<UI_Item>();
 

@@ -18,7 +18,7 @@ public class Interact_Dialogue : AInteractable
     private GameObject _root = null;
 
     [SerializeField]
-    private List<AInteractable> _interactables;
+    private List<AInteractable> _interactables = null;
 
     [SerializeField]
     private string _customInkString = "";

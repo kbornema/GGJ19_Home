@@ -359,6 +359,7 @@ MonoBehaviour:
   _top: {fileID: 1202411723}
   _renderGizmo: 1
   _gizmoColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _oldSize: {x: 0.75, y: 0.75, z: 0.75}
 --- !u!65 &1609158543
 BoxCollider:
   m_ObjectHideFlags: 0

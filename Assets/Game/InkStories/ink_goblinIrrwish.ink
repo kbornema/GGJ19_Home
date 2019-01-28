@@ -41,6 +41,7 @@ INCLUDE ink_externalFunctions.ink
         ~ float_goblin_trust = float_goblin_trust + 5
         { removeItem(STRING_ITEM_MEAT) }
         { randGoblinGah() } Ihr teilt das Fleisch gemeinschaftlich. Wie schön. { randGoblinGah()}
+        
         + [Weiter] ->startKnot
         
     = knot_give_meat
@@ -49,13 +50,20 @@ INCLUDE ink_externalFunctions.ink
         { removeItem(STRING_ITEM_MEAT) } 
         
         { randGoblinGah() } Der Goblin verschlingt das Fleisch am Stück. "Danke!" { randGoblinGah()}
+        
         + [Weiter] ->knot_tip
         
         
     = knot_tip
         
-        { float_goblin_trust >= 10 : { randGoblinGah() } Geheimer Raum! Geh' zurück. Finde! { randGoblinGah()} + ["Danke!" Gehen] ->END}
+        ~temp bool_givesPlayerSecret = float_goblin_trust >= 10
         
-        {float_goblin_trust < 10 : *Rülpst* { randGoblinGah() } War gut! + [Weiter] -> startKnot}
+        { bool_givesPlayerSecret : { randGoblinGah() } Geheimer Raum! Finde! Geh' zurück. { randGoblinGah()} }
+        { not bool_givesPlayerSecret : *Rülpst* { randGoblinGah() } War gut! }
+        
+        * { bool_givesPlayerSecret } ["Danke!" (Gehen)] -> END
+        * { not bool_givesPlayerSecret } [Weiter] -> startKnot
+            
+  
  
         

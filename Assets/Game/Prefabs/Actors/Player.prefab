@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 2633669128080603756}
   - component: {fileID: 2633669128080603757}
   - component: {fileID: 2633669128080603762}
+  - component: {fileID: 104305322}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -124,7 +125,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 50
+  far clip plane: 40
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -151,6 +152,23 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2633669128080603763}
   m_Enabled: 1
+--- !u!114 &104305322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2633669128080603763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c6d020348916c43b05807fc483b5cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxRotation: {x: 15, y: 15, z: 15}
+  _traumaPower: 2
+  _traumaDampen: 4
+  _shakeSpeed: 6
+  ReduceTrauma: 0
 --- !u!1 &2633669128365117000
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,9 +232,11 @@ MonoBehaviour:
   _health: 100
   _maxHealth: 100
   _dmgClose: -100
-  _dmgFar: -20
-  _dmgFacingFactor: 2.5
+  _dmgFar: -15
+  _dmgFacingFactor: 2
   _inventory: []
+  _shake: {fileID: 104305322}
+  _minFacingDmg: 0.25
   AddedItemEvent:
     m_PersistentCalls:
       m_Calls: []

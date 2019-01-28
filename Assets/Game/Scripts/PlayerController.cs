@@ -58,7 +58,12 @@ public class PlayerController : MonoBehaviour
     private float _dmgFacingFactor = 2.0f;
 
     [SerializeField]
-    private List<Item> _inventory;
+    private List<Item> _inventory = null;
+
+    [SerializeField]
+    private CamShake _shake = null;
+    [SerializeField]
+    private float _minFacingDmg = 0.25f;
 
     [HideInInspector]
     public ItemEvent AddedItemEvent = new ItemEvent();
@@ -82,7 +87,15 @@ public class PlayerController : MonoBehaviour
 
     public void OnLookAtIrrwish(float distT, float facingT, float opaqueness)
     {
-        float dmg = Mathf.Lerp(_dmgClose, _dmgFar, distT) * facingT * _dmgFacingFactor * (1.0f - opaqueness);
+        float totalFactor = facingT * Mathf.Clamp(_dmgFacingFactor, _minFacingDmg, 1.0f) * (1.0f - opaqueness);
+
+        if (_shake)
+        {
+            _shake.ReduceTrauma = false;
+            _shake.AddTrauma(totalFactor * Time.deltaTime);
+        }
+
+        float dmg = Mathf.Lerp(_dmgClose, _dmgFar, distT) * totalFactor;
         ChangeHealth(dmg * Time.deltaTime);
     }
 
@@ -115,6 +128,19 @@ public class PlayerController : MonoBehaviour
         }
 
         GameManager.Instance.SetInteractPreviewString(previewString);
+
+        if (GameManager.Instance.MouseLocked)
+        {
+            float rotationY = Input.GetAxis("Mouse X");
+            float rotationX = Input.GetAxis("Mouse Y") * (_invertY ? 1.0f : -1.0f);
+
+            float curLookSpeed = Time.deltaTime * _lookSpeed;
+
+            _curRotationCam.x += rotationX * curLookSpeed;
+            _curRotationCam.x = Mathf.Clamp(_curRotationCam.x, _minLook, _maxLook);
+            _curRotationCam.y += rotationY * curLookSpeed;
+            camTransform.localRotation = Quaternion.Euler(_curRotationCam);
+        }
     }
 
     // Update is called once per frame
@@ -136,19 +162,6 @@ public class PlayerController : MonoBehaviour
             curMoveDir *= _walkSpeedFactor;
 
         _rigibody.position += curMoveDir * fixedDelta * _moveSpeed;
-
-        if (GameManager.Instance.MouseLocked)
-        {
-            float rotationY = Input.GetAxis("Mouse X");
-            float rotationX = Input.GetAxis("Mouse Y") * (_invertY ? 1.0f : -1.0f);
-
-            float curLookSpeed = fixedDelta * _lookSpeed;
-
-            _curRotationCam.x += rotationX * curLookSpeed;
-            _curRotationCam.x = Mathf.Clamp(_curRotationCam.x, _minLook, _maxLook);
-            _curRotationCam.y += rotationY * curLookSpeed;
-            camTransform.localRotation = Quaternion.Euler(_curRotationCam);
-        }
     }
 
     public void GiveItem(Item item)

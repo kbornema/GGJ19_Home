@@ -5,7 +5,7 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     [SerializeField]
-    private Transform _spawnPos;
+    private Transform _spawnPos = null;
 
     private void OnTriggerEnter(Collider collision)
     {   
