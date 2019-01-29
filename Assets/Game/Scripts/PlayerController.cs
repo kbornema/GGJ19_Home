@@ -10,18 +10,13 @@ public class PlayerController : MonoBehaviour
     public class ItemEvent : UnityEvent<Item> { }
 
     [SerializeField]
-    private Rigidbody _rigibody = null;
+    private Actor _actor = null;
+
     [SerializeField]
     private Camera _camera = null;
     [SerializeField]
     private Transform _center = null;
     public Transform Center { get { return _center; } }
-
-    [Header("Movement")]
-    [SerializeField]
-    private float _moveSpeed = 1.0f;
-    [SerializeField]
-    private float _walkSpeedFactor = 0.5f;
 
     [Header("Look")]
     [SerializeField]
@@ -69,6 +64,8 @@ public class PlayerController : MonoBehaviour
     public ItemEvent AddedItemEvent = new ItemEvent();
     [HideInInspector]
     public ItemEvent RemovedItemEvent = new ItemEvent();
+
+   
 
     public Vector3 GetViewDir()
     {
@@ -141,27 +138,16 @@ public class PlayerController : MonoBehaviour
             _curRotationCam.y += rotationY * curLookSpeed;
             camTransform.localRotation = Quaternion.Euler(_curRotationCam);
         }
-    }
-
-    // Update is called once per frame
-    private void FixedUpdate()
-    {
-        if (GameManager.Instance.IsDialogueRunning)
-            return;
-
-        float fixedDelta = Time.fixedDeltaTime;
 
         Vector2 dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
-        Transform camTransform = _camera.transform;
 
         Vector3 curMoveDir = (camTransform.forward * dir.y + camTransform.right * dir.x);
         curMoveDir.y = 0.0f;
 
-        if (Input.GetKey(KeyCode.LeftShift))
-            curMoveDir *= _walkSpeedFactor;
+        if (curMoveDir.sqrMagnitude > 1.0f)
+            curMoveDir.Normalize();
 
-        _rigibody.position += curMoveDir * fixedDelta * _moveSpeed;
+        _actor.SetMoveDir(curMoveDir);
     }
 
     public void GiveItem(Item item)

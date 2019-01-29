@@ -2,12 +2,9 @@ INCLUDE ink_globalVars.ink
 INCLUDE ink_externalFunctions.ink
 INCLUDE ink_goblinFlavor.ink
 
-
 ->startKnot
 
 === startKnot ===
-
-    ~float_goblin_trust = -10
 
     Die Tür führt nach draußen. Endlich kannst du Nachhause!
     
@@ -18,11 +15,6 @@ INCLUDE ink_goblinFlavor.ink
     
         { float_goblin_trust < 0 :  -> knot_bad_ending }
         { float_goblin_trust >= 0 :  -> knot_make_friends }
-            
-    
-    = knot_end
-        { endGame() } 
-        ->END
         
     = knot_make_friends
     
@@ -37,4 +29,9 @@ INCLUDE ink_goblinFlavor.ink
     
         {randGoblinGah()} Du hörst ein Geräusch und spürst wie dir jemand ein Messer in den Rücken sticht. {goblinPlayerLabel(float_goblin_trust)} 
         +[Spiel Beenden] -> knot_end
+        
+        
+    = knot_end
+        { endGame() } 
+        ->END
         

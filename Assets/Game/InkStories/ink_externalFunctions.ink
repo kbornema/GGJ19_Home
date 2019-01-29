@@ -1,22 +1,10 @@
-EXTERNAL hasItem(name)
-EXTERNAL giveItem(name)
-EXTERNAL removeItem(name)
-
-EXTERNAL destroyDialogueOwner()
-
-EXTERNAL enableNpc(who, where, val)
-
-EXTERNAL triggerInteractable(int_id)
-
-EXTERNAL endGame()
-
-//
-// Fallback functions:
-//
-
 //
 // Items:
 //
+
+EXTERNAL hasItem(name)
+EXTERNAL giveItem(name)
+EXTERNAL removeItem(name)
 
 === function hasItem(itemName) ===
     ~return true
@@ -30,11 +18,15 @@ EXTERNAL endGame()
 //
 // Other:
 //
+
+EXTERNAL destroyDialogueOwner()
+EXTERNAL enableNpc(who, where, val)
+EXTERNAL triggerInteractable(int_id)
+EXTERNAL endGame()
     
 === function destroyDialogueOwner() ===
     ~return 
     
-        
 === function enableNpc(who, where, val) ===
     ~return 
     
